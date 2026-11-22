@@ -479,11 +479,38 @@ ${sshCmd}`;
         function closeModal() { document.getElementById('modal').classList.remove('open'); }
 
         function copyCmd() {
-            navigator.clipboard.writeText(document.getElementById('cmd-box').textContent);
+            const text = document.getElementById('cmd-box').textContent;
             const btn = document.getElementById('copy-btn');
             const oldText = btn.textContent;
-            btn.textContent = '✅ Tersalin! Tinggal Paste';
-            setTimeout(() => btn.textContent = oldText, 2200);
+
+            const onSuccess = () => {
+                btn.textContent = '✅ Tersalin! Tinggal Paste';
+                setTimeout(() => btn.textContent = oldText, 2200);
+            };
+
+            // Gunakan Clipboard API jika HTTPS/localhost, fallback ke textarea jika HTTP biasa
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(text).then(onSuccess).catch(() => fallbackCopy(text, onSuccess));
+            } else {
+                fallbackCopy(text, onSuccess);
+            }
+        }
+
+        function fallbackCopy(text, callback) {
+            const textArea = document.createElement('textarea');
+            textArea.value = text;
+            textArea.style.position = 'fixed';
+            textArea.style.left = '-9999px';
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            try {
+                document.execCommand('copy');
+                callback();
+            } catch (err) {
+                alert('Gagal menyalin otomatis, silakan blok & copy manual dari kotak teks.');
+            }
+            document.body.removeChild(textArea);
         }
 
         loadRooms();
@@ -491,3 +518,4 @@ ${sshCmd}`;
 </body>
 
 </html>
+
