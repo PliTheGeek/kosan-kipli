@@ -13,6 +13,7 @@
             --accent: #38bdf8;
             --accent2: #818cf8;
             --green: #34d399;
+            --amber: #fbbf24;
             --text: #f1f5f9;
             --muted: #94a3b8;
         }
@@ -86,11 +87,28 @@
             border-color: rgba(52, 211, 153, 0.25);
         }
 
+        .btn-admin {
+            background: rgba(30, 41, 59, 0.9);
+            color: var(--muted);
+            border: 1px solid #334155;
+            padding: 10px 16px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn-admin:hover {
+            color: var(--text);
+            border-color: var(--accent);
+        }
+
         .btn-primary {
             background: linear-gradient(135deg, var(--accent), var(--accent2));
             color: #090d16;
             border: none;
-            padding: 12px 20px;
+            padding: 12px 22px;
             border-radius: 12px;
             font-weight: 700;
             font-size: 14px;
@@ -107,6 +125,7 @@
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
             gap: 18px;
+            margin-bottom: 24px;
         }
 
         .room-card {
@@ -183,12 +202,38 @@
             border-color: var(--accent);
         }
 
+        /* Card Daftar / Ajukan Kamar Baru */
+        .apply-card {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.85), rgba(15, 23, 42, 0.9));
+            border: 1px dashed rgba(56, 189, 248, 0.45);
+            border-radius: 20px;
+            padding: 26px 30px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .apply-info h2 {
+            font-size: 19px;
+            margin-bottom: 5px;
+            color: #f8fafc;
+        }
+
+        .apply-info p {
+            font-size: 13.5px;
+            color: var(--muted);
+            max-width: 540px;
+            line-height: 1.55;
+        }
+
         /* Modal */
         .modal-bg {
             display: none;
             position: fixed;
             inset: 0;
-            background: rgba(2, 6, 23, 0.8);
+            background: rgba(2, 6, 23, 0.82);
             backdrop-filter: blur(6px);
             align-items: center;
             justify-content: center;
@@ -218,6 +263,7 @@
             font-size: 13px;
             color: var(--muted);
             margin-bottom: 16px;
+            line-height: 1.5;
         }
 
         .form-row {
@@ -254,6 +300,8 @@
             overflow-x: auto;
             line-height: 1.5;
             margin-bottom: 14px;
+            white-space: pre-wrap;
+            word-break: break-word;
         }
 
         .modal-foot {
@@ -273,7 +321,7 @@
 
         footer {
             text-align: center;
-            margin-top: 32px;
+            margin-top: 28px;
             font-size: 12px;
             color: var(--muted);
         }
@@ -292,38 +340,61 @@
                     <span class="pill">Nginx Reverse Proxy</span>
                 </div>
             </div>
-            <button class="btn-primary" onclick="openModal()">➕ Tambah Bilik Baru</button>
+            <button class="btn-admin" onclick="openModal('admin')">🔑 Panel Juragan</button>
         </header>
 
         <div class="grid" id="room-grid"></div>
 
+        <!-- Card Bawah: Ajukan Kamar Baru -->
+        <div class="apply-card">
+            <div class="apply-info">
+                <h2>🚪 Ingin Daftar? Ajukan Kamar Baru</h2>
+                <p>Butuh tempat hosting proyek Node.js, Express, PHP, atau web statis? Isi form pengajuan kamar lalu
+                    kirim formatnya ke WhatsApp / Discord Juragan Kos (<strong>pli</strong>) untuk dibukakan kunci
+                    kamarmu.</p>
+            </div>
+            <button class="btn-primary" onclick="openModal('guest')">📩 Ajukan Kamar Baru</button>
+        </div>
+
         <footer>Juragan Kos: <strong>pli</strong> • Auto-deployed via GitHub Actions</footer>
     </div>
 
+    <!-- Modal Pengajuan & Generator -->
     <div class="modal-bg" id="modal">
         <div class="modal">
-            <h2>➕ Generator Kunci Bilik Baru</h2>
-            <p>Demi keamanan (PHP shell dinonaktifkan), jalankan perintah hasil generator ini di terminal
-                <code>pli@pli-vm</code>:</p>
+            <h2 id="modal-title">📩 Ajukan Kamar Baru</h2>
+            <p id="modal-desc"></p>
             <div class="form-row">
                 <div>
-                    <label>Username Linux (huruf kecil)</label>
-                    <input type="text" id="in-user" value="budi" oninput="genCmd()" />
+                    <label>Nama Panggilan / Penghuni</label>
+                    <input type="text" id="in-name" value="Mas Budi" oninput="genText()" />
+                </div>
+                <div>
+                    <label>Request Username (huruf kecil)</label>
+                    <input type="text" id="in-user" value="budi" oninput="genText()" />
+                </div>
+            </div>
+            <div class="form-row">
+                <div>
+                    <label>Stack Proyek (Node / PHP / Statis)</label>
+                    <input type="text" id="in-stack" value="Express.js + PHP" oninput="genText()" />
                 </div>
                 <div>
                     <label>Jatah Port Internal</label>
-                    <input type="number" id="in-port" value="3020" oninput="genCmd()" />
+                    <input type="number" id="in-port" value="3020" oninput="genText()" />
                 </div>
             </div>
             <pre id="cmd-box"></pre>
             <div class="modal-foot">
                 <button class="btn-ghost" onclick="closeModal()">Tutup</button>
-                <button class="btn-primary" id="copy-btn" onclick="copyCmd()">📋 Salin Perintah SSH</button>
+                <button class="btn-primary" id="copy-btn" onclick="copyCmd()">📋 Salin Format</button>
             </div>
         </div>
     </div>
 
     <script>
+        let currentMode = 'guest';
+
         async function loadRooms() {
             const res = await fetch('./bilik.json?v=' + Date.now());
             const rooms = await res.json();
@@ -346,23 +417,61 @@
       `).join('');
         }
 
-        function genCmd() {
+        function genText() {
+            const n = document.getElementById('in-name').value || 'Penghuni Baru';
             const u = (document.getElementById('in-user').value || 'penghuni').toLowerCase().replace(/[^a-z0-9_]/g, '');
+            const s = document.getElementById('in-stack').value || 'Node.js / Statis';
             const p = document.getElementById('in-port').value || '3020';
-            document.getElementById('cmd-box').textContent =
+
+            const sshCmd =
                 `sudo adduser ${u} && sudo chmod 711 /home/${u} && \\
 sudo mkdir -p /home/${u}/public_html && sudo chown -R ${u}:${u} /home/${u}/public_html && \\
 sudo sed -i '/^}$/i \\    location /${u}/ { proxy_pass http://127.0.0.1:${p}/; proxy_http_version 1.1; proxy_set_header Upgrade \\$http_upgrade; proxy_set_header Connection "upgrade"; proxy_set_header Host \\$host; }' /etc/nginx/sites-available/bilik-multiuser && \\
 sudo nginx -t && sudo systemctl reload nginx`;
+
+            if (currentMode === 'guest') {
+                document.getElementById('cmd-box').textContent =
+                    `Halo Juragan pli! 👋 Saya mau ajukan kamar baru di Kosan Kipli:
+• Nama: ${n}
+• Username: ${u}
+• Stack: ${s}
+• Port: ${p}
+
+--- Perintah Setup (Khusus Juragan pli) ---
+${sshCmd}`;
+            } else {
+                document.getElementById('cmd-box').textContent = sshCmd;
+            }
         }
 
-        function openModal() { genCmd(); document.getElementById('modal').classList.add('open'); }
+        function openModal(mode) {
+            currentMode = mode;
+            const title = document.getElementById('modal-title');
+            const desc = document.getElementById('modal-desc');
+            const btn = document.getElementById('copy-btn');
+
+            if (mode === 'guest') {
+                title.textContent = '📩 Ajukan Kamar Baru';
+                desc.innerHTML = 'Isi datamu di bawah, klik <strong>Salin Pesan Pengajuan</strong>, lalu kirim ke WhatsApp atau Discord Juragan Kos (<code>pli</code>). Perintah setup hanya bisa dijalankan oleh Juragan Kos.';
+                btn.textContent = '📋 Salin Pesan Pengajuan';
+            } else {
+                title.textContent = '🔑 Panel Juragan — Generator SSH';
+                desc.innerHTML = 'Khusus <code>pli@pli-vm</code> (membutuhkan akses <code>sudo</code>). Jalankan di terminal untuk membuka kamar baru:';
+                btn.textContent = '📋 Salin Perintah SSH';
+            }
+
+            genText();
+            document.getElementById('modal').classList.add('open');
+        }
+
         function closeModal() { document.getElementById('modal').classList.remove('open'); }
+
         function copyCmd() {
             navigator.clipboard.writeText(document.getElementById('cmd-box').textContent);
             const btn = document.getElementById('copy-btn');
-            btn.textContent = '✅ Tersalin!';
-            setTimeout(() => btn.textContent = '📋 Salin Perintah SSH', 2000);
+            const oldText = btn.textContent;
+            btn.textContent = '✅ Tersalin! Tinggal Paste';
+            setTimeout(() => btn.textContent = oldText, 2200);
         }
 
         loadRooms();
