@@ -1,11 +1,21 @@
-Ini file **`README.md`** utuh yang sudah dirapikan dalam satu blok penuh supaya bisa langsung kamu salin (*copy*) dan simpan ke root repository **`kosan-kipli`**:
-
-```markdown
 # 🏠 Kosan Kipli — Panduan Penghuni Multi-Bilik Server
 
 Selamat datang di **Kosan Kipli** (`48.193.45.144`), server VPS Ubuntu multi-tenant dengan isolasi kamar per-user (`chmod 711`), Nginx Reverse Proxy, PHP 8.5-FPM, Node.js v22 LTS, PM2, dan Fail2Ban.
 
 Setiap penghuni memiliki **kunci kamar (user Linux) masing-masing**, bebas deploy aplikasi mandiri tanpa akses `sudo`, dan tidak bisa mengintip isi kamar penghuni lain.
+
+---
+
+## ⚠️ Penting: Belum Punya Kamar? Daftar Dulu!
+
+Sebelum menjalankan perintah SSH, deploy, maupun setup CI/CD di bawah ini, **kamu wajib terdaftar sebagai penghuni kamar terlebih dahulu** dan sudah menerima **username**, **password awal**, serta **jatah port internal** dari Juragan Kos (`pli`).
+
+### Cara Mengajukan Kamar Baru:
+1. Buka halaman utama dashboard di **`http://48.193.45.144/`**.
+2. Klik tombol **"📩 Ajukan Kamar Baru"** pada panel pendaftaran.
+3. Isi nama panggilan, username yang diinginkan, stack proyek, dan port yang tersedia.
+4. Klik **"📋 Salin Pesan Pengajuan"** lalu kirimkan formatnya ke WhatsApp atau Discord Juragan Kos (**`pli`**).
+5. Tunggu konfirmasi dari Juragan Kos bahwa akun Linux dan jalur Nginx kamarmu sudah aktif sebelum lanjut ke langkah berikutnya.
 
 ---
 
@@ -20,6 +30,8 @@ Setiap penghuni memiliki **kunci kamar (user Linux) masing-masing**, bebas deplo
 ---
 
 ## 🔑 1. Login ke Kamar Masing-Masing
+
+*(Pastikan kamarmu sudah diaktifkan oleh Juragan Kos sebelum mencoba login).*
 
 Masuk lewat terminal SSH menggunakan username dan password yang diberikan Juragan Kos (`pli`):
 
@@ -168,13 +180,12 @@ jobs:
 
 ---
 
-## 📜 Tata Tertib Kosan Kipli
+## 📜 Tata Tertib Kosan Kipli (House Rules)
 
-1. **Jangan jalankan `npm run build` berat langsung di server** (seperti Next.js skala besar) tanpa mengandalkan GitHub Actions agar RAM 1 GiB tidak kehabisan memori.
-2. **Gunakan port sesuai jatah kamar** — dilarang memakai port milik kamar lain.
-3. **Selalu jalankan `npm audit fix`** sebelum deploy proyek Node.js/React ke server.
-4. **Jangan ubah permission folder `/home/<username>`** ke `755` atau `777` (biarkan `711`) agar privasi file proyekmu tetap terlindungi dari penghuni lain.
+> [!CAUTION]
+> **<span style="color: #ef4444;">1. DILARANG KERAS MENJALANKAN `npm run build` LANGSUNG DI SERVER!</span>**
+> **<span style="color: #ef4444;">Spesifikasi server hanya memiliki RAM 1 GiB. Menjalankan proses build (Next.js, Vite, React, dll.) secara langsung di terminal VM akan memicu *Out of Memory (OOM)* dan membuat server *hang* bagi seluruh penghuni. Wajib lakukan `npm run build` di komputer lokal atau lewat runner GitHub Actions!</span>**
 
-```
-
-Cukup klik tombol copy di pojok kanan atas blok kode di atas, paste ke file `README.md`, lalu `git push` ke repo `kosan-kipli`!
+2. **<span style="color: #ef4444;">Gunakan port sesuai jatah kamar</span>** — dilarang keras memakai port milik kamar lain atau membunuh proses PM2 penghuni lain.
+3. **<span style="color: #ef4444;">Selalu jalankan `npm audit fix`</span>** di lokal sebelum mengirim proyek Node.js/React ke server.
+4. **<span style="color: #ef4444;">Jangan ubah permission folder `/home/<username>`</span>** ke `755` atau `777` (biarkan tetap `711`) agar privasi file proyekmu terlindungi dari penghuni lain.
