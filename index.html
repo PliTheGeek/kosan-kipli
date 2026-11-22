@@ -13,7 +13,6 @@
             --accent: #38bdf8;
             --accent2: #818cf8;
             --green: #34d399;
-            --amber: #fbbf24;
             --text: #f1f5f9;
             --muted: #94a3b8;
         }
@@ -49,7 +48,7 @@
             border: 1px solid var(--border);
             border-radius: 22px;
             padding: 28px 32px;
-            margin-bottom: 24px;
+            margin-bottom: 18px;
         }
 
         .title-group h1 {
@@ -121,11 +120,47 @@
             box-shadow: 0 8px 20px rgba(56, 189, 248, 0.35);
         }
 
+        /* Card Daftar / Ajukan Kamar Baru (Tepat di bawah Header Kosan Kipli) */
+        .apply-card {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.85), rgba(15, 23, 42, 0.9));
+            border: 1px dashed rgba(56, 189, 248, 0.45);
+            border-radius: 20px;
+            padding: 24px 30px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 18px;
+            margin-bottom: 26px;
+        }
+
+        .apply-info h2 {
+            font-size: 18px;
+            margin-bottom: 5px;
+            color: #f8fafc;
+        }
+
+        .apply-info p {
+            font-size: 13.5px;
+            color: var(--muted);
+            max-width: 540px;
+            line-height: 1.55;
+        }
+
+        .section-label {
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: var(--muted);
+            margin-bottom: 12px;
+            padding-left: 4px;
+        }
+
         .grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
             gap: 18px;
-            margin-bottom: 24px;
         }
 
         .room-card {
@@ -200,32 +235,6 @@
             background: var(--accent);
             color: #090d16;
             border-color: var(--accent);
-        }
-
-        /* Card Daftar / Ajukan Kamar Baru */
-        .apply-card {
-            background: linear-gradient(135deg, rgba(30, 41, 59, 0.85), rgba(15, 23, 42, 0.9));
-            border: 1px dashed rgba(56, 189, 248, 0.45);
-            border-radius: 20px;
-            padding: 26px 30px;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            align-items: center;
-            gap: 18px;
-        }
-
-        .apply-info h2 {
-            font-size: 19px;
-            margin-bottom: 5px;
-            color: #f8fafc;
-        }
-
-        .apply-info p {
-            font-size: 13.5px;
-            color: var(--muted);
-            max-width: 540px;
-            line-height: 1.55;
         }
 
         /* Modal */
@@ -321,7 +330,7 @@
 
         footer {
             text-align: center;
-            margin-top: 28px;
+            margin-top: 32px;
             font-size: 12px;
             color: var(--muted);
         }
@@ -330,6 +339,7 @@
 
 <body>
     <div class="container">
+        <!-- 1. Header Kosan Kipli -->
         <header>
             <div class="title-group">
                 <h1>🏠 Kosan Kipli</h1>
@@ -343,9 +353,7 @@
             <button class="btn-admin" onclick="openModal('admin')">🔑 Panel Juragan</button>
         </header>
 
-        <div class="grid" id="room-grid"></div>
-
-        <!-- Card Bawah: Ajukan Kamar Baru -->
+        <!-- 2. Panel Ajukan Kamar Baru -->
         <div class="apply-card">
             <div class="apply-info">
                 <h2>🚪 Ingin Daftar? Ajukan Kamar Baru</h2>
@@ -355,6 +363,10 @@
             </div>
             <button class="btn-primary" onclick="openModal('guest')">📩 Ajukan Kamar Baru</button>
         </div>
+
+        <!-- 3. List Kamar Penghuni -->
+        <div class="section-label">Daftar Penghuni Kamar</div>
+        <div class="grid" id="room-grid"></div>
 
         <footer>Juragan Kos: <strong>pli</strong> • Auto-deployed via GitHub Actions</footer>
     </div>
