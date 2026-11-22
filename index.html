@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kosan Kipli | Multi-Bilik Cloud Server</title>
+    <style>
+        :root {
+            --bg: #090d16;
+            --card: rgba(17, 24, 39, 0.78);
+            --border: rgba(148, 163, 184, 0.16);
+            --accent: #38bdf8;
+            --accent2: #818cf8;
+            --green: #34d399;
+            --text: #f1f5f9;
+            --muted: #94a3b8;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            color: var(--text);
+            padding: 32px 20px;
+            background: radial-gradient(circle at 15% 15%, #1e1b4b 0%, transparent 45%),
+                radial-gradient(circle at 85% 80%, #0c4a6e 0%, transparent 45%), var(--bg);
+        }
+
+        .container {
+            max-width: 880px;
+            margin: 0 auto;
+        }
+
+        header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            background: var(--card);
+            backdrop-filter: blur(14px);
+            border: 1px solid var(--border);
+            border-radius: 22px;
+            padding: 28px 32px;
+            margin-bottom: 24px;
+        }
+
+        .title-group h1 {
+            font-size: 28px;
+            background: linear-gradient(to right, var(--accent), var(--accent2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 6px;
+        }
+
+        .title-group p {
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .specs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .pill {
+            font-size: 12px;
+            padding: 4px 11px;
+            border-radius: 999px;
+            background: rgba(56, 189, 248, 0.12);
+            color: var(--accent);
+            border: 1px solid rgba(56, 189, 248, 0.25);
+        }
+
+        .pill.safe {
+            background: rgba(52, 211, 153, 0.12);
+            color: var(--green);
+            border-color: rgba(52, 211, 153, 0.25);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            color: #090d16;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(56, 189, 248, 0.35);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+            gap: 18px;
+        }
+
+        .room-card {
+            background: var(--card);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 22px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: border-color 0.2s, transform 0.2s;
+        }
+
+        .room-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-3px);
+        }
+
+        .room-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .room-no {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .status-dot {
+            font-size: 12px;
+            color: var(--green);
+        }
+
+        .room-card h3 {
+            font-size: 19px;
+            margin-bottom: 4px;
+        }
+
+        .meta {
+            font-size: 13px;
+            color: var(--muted);
+            margin-bottom: 16px;
+            line-height: 1.5;
+        }
+
+        .room-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-link {
+            flex: 1;
+            text-align: center;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            padding: 9px 12px;
+            border-radius: 10px;
+            background: #1e293b;
+            color: var(--text);
+            border: 1px solid #334155;
+            transition: 0.2s;
+        }
+
+        .btn-link:hover {
+            background: var(--accent);
+            color: #090d16;
+            border-color: var(--accent);
+        }
+
+        /* Modal */
+        .modal-bg {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(2, 6, 23, 0.8);
+            backdrop-filter: blur(6px);
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            z-index: 50;
+        }
+
+        .modal-bg.open {
+            display: flex;
+        }
+
+        .modal {
+            background: #0f172a;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            max-width: 560px;
+            width: 100%;
+            padding: 28px;
+        }
+
+        .modal h2 {
+            font-size: 20px;
+            margin-bottom: 6px;
+        }
+
+        .modal p {
+            font-size: 13px;
+            color: var(--muted);
+            margin-bottom: 16px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 14px;
+        }
+
+        label {
+            display: block;
+            font-size: 12px;
+            color: var(--muted);
+            margin-bottom: 5px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px 12px;
+            border-radius: 10px;
+            border: 1px solid #334155;
+            background: #1e293b;
+            color: #fff;
+            font-size: 14px;
+        }
+
+        pre {
+            background: #020617;
+            border: 1px solid #1e293b;
+            padding: 14px;
+            border-radius: 12px;
+            font-size: 12px;
+            color: #38bdf8;
+            overflow-x: auto;
+            line-height: 1.5;
+            margin-bottom: 14px;
+        }
+
+        .modal-foot {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .btn-ghost {
+            background: transparent;
+            border: 1px solid #334155;
+            color: var(--muted);
+            padding: 10px 16px;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 32px;
+            font-size: 12px;
+            color: var(--muted);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div class="title-group">
+                <h1>🏠 Kosan Kipli</h1>
+                <p>Multi-Tenant Ubuntu VPS • Isolasi Per-User & Auto CI/CD GitHub Actions</p>
+                <div class="specs">
+                    <span class="pill safe">● Hardened PHP 8.5 & Fail2Ban</span>
+                    <span class="pill">Node.js v22 + PM2</span>
+                    <span class="pill">Nginx Reverse Proxy</span>
+                </div>
+            </div>
+            <button class="btn-primary" onclick="openModal()">➕ Tambah Bilik Baru</button>
+        </header>
+
+        <div class="grid" id="room-grid"></div>
+
+        <footer>Juragan Kos: <strong>pli</strong> • Auto-deployed via GitHub Actions</footer>
+    </div>
+
+    <div class="modal-bg" id="modal">
+        <div class="modal">
+            <h2>➕ Generator Kunci Bilik Baru</h2>
+            <p>Demi keamanan (PHP shell dinonaktifkan), jalankan perintah hasil generator ini di terminal
+                <code>pli@pli-vm</code>:</p>
+            <div class="form-row">
+                <div>
+                    <label>Username Linux (huruf kecil)</label>
+                    <input type="text" id="in-user" value="budi" oninput="genCmd()" />
+                </div>
+                <div>
+                    <label>Jatah Port Internal</label>
+                    <input type="number" id="in-port" value="3020" oninput="genCmd()" />
+                </div>
+            </div>
+            <pre id="cmd-box"></pre>
+            <div class="modal-foot">
+                <button class="btn-ghost" onclick="closeModal()">Tutup</button>
+                <button class="btn-primary" id="copy-btn" onclick="copyCmd()">📋 Salin Perintah SSH</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function loadRooms() {
+            const res = await fetch('./bilik.json?v=' + Date.now());
+            const rooms = await res.json();
+            const grid = document.getElementById('room-grid');
+            grid.innerHTML = rooms.map(r => `
+        <div class="room-card">
+          <div>
+            <div class="room-top">
+              <span class="room-no">${r.kamar}</span>
+              <span class="status-dot">● ${r.status}</span>
+            </div>
+            <h3>${r.penghuni}</h3>
+            <div class="meta">User: <code>@${r.username}</code> • Port: <code>:${r.port}</code><br/>Stack: ${r.stack}</div>
+          </div>
+          <div class="room-actions">
+            <a class="btn-link" href="/~${r.username}/">🌐 Statis/PHP</a>
+            <a class="btn-link" href="/${r.username}/">⚡ Node :${r.port}</a>
+          </div>
+        </div>
+      `).join('');
+        }
+
+        function genCmd() {
+            const u = (document.getElementById('in-user').value || 'penghuni').toLowerCase().replace(/[^a-z0-9_]/g, '');
+            const p = document.getElementById('in-port').value || '3020';
+            document.getElementById('cmd-box').textContent =
+                `sudo adduser ${u} && sudo chmod 711 /home/${u} && \\
+sudo mkdir -p /home/${u}/public_html && sudo chown -R ${u}:${u} /home/${u}/public_html && \\
+sudo sed -i '/^}$/i \\    location /${u}/ { proxy_pass http://127.0.0.1:${p}/; proxy_http_version 1.1; proxy_set_header Upgrade \\$http_upgrade; proxy_set_header Connection "upgrade"; proxy_set_header Host \\$host; }' /etc/nginx/sites-available/bilik-multiuser && \\
+sudo nginx -t && sudo systemctl reload nginx`;
+        }
+
+        function openModal() { genCmd(); document.getElementById('modal').classList.add('open'); }
+        function closeModal() { document.getElementById('modal').classList.remove('open'); }
+        function copyCmd() {
+            navigator.clipboard.writeText(document.getElementById('cmd-box').textContent);
+            const btn = document.getElementById('copy-btn');
+            btn.textContent = '✅ Tersalin!';
+            setTimeout(() => btn.textContent = '📋 Salin Perintah SSH', 2000);
+        }
+
+        loadRooms();
+    </script>
+</body>
+
+</html>

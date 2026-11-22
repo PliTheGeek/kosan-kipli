@@ -1,0 +1,10 @@
+[
+  {
+    "kamar": "Kamar 01",
+    "penghuni": "Mas Nawawow",
+    "username": "nawawow",
+    "port": 3010,
+    "stack": "Node.js / Express + PHP",
+    "status": "Aktif"
+  }
+]
