@@ -183,6 +183,84 @@ jobs:
 
 ---
 
+## 🖥️ 5. Terminal Multiplexer — Sesi SSH yang Tidak Mati
+
+Saat koneksi SSH-mu terputus (internet mati, laptop ditutup, dsb.), semua proses yang sedang berjalan di terminal akan ikut terhenti. Gunakan **terminal multiplexer** agar sesi tetap hidup di background server walaupun koneksi terputus.
+
+Server Kosan Kipli sudah menyediakan **tmux** dan **screen**. Pilih salah satu yang paling nyaman.
+
+### Opsi A: tmux (Rekomendasi)
+
+```bash
+# Buat sesi baru bernama "kerja"
+tmux new -s kerja
+
+# --- Kamu sekarang di dalam sesi tmux ---
+# Jalankan perintah seperti biasa, misal:
+npm run dev
+# atau
+pm2 logs
+
+# Detach (keluar tanpa mematikan sesi): tekan  Ctrl+B  lalu  D
+
+# Lain waktu, masuk lagi ke sesi yang masih jalan:
+tmux attach -t kerja
+
+# Lihat daftar semua sesi tmux yang aktif:
+tmux ls
+
+# Hapus/matikan sesi yang sudah tidak dipakai:
+tmux kill-session -t kerja
+```
+
+**Cheatsheet Shortcut tmux** (tekan `Ctrl+B` dulu, lepas, lalu tekan tombol berikut):
+
+| Shortcut | Fungsi |
+| :--- | :--- |
+| `d` | Detach — keluar dari sesi tanpa mematikannya |
+| `c` | Buat window (tab) baru di dalam sesi |
+| `n` / `p` | Pindah ke window **berikutnya** / **sebelumnya** |
+| `0`–`9` | Langsung loncat ke window nomor tertentu |
+| `%` | Split panel secara **vertikal** (kiri-kanan) |
+| `"` | Split panel secara **horizontal** (atas-bawah) |
+| Arrow keys | Pindah antar panel yang sudah di-split |
+| `[` | Mode scroll — navigasi output dengan arrow/PgUp/PgDn, tekan `q` untuk keluar |
+| `x` | Tutup panel/window aktif (ada konfirmasi) |
+
+### Opsi B: screen (Alternatif)
+
+```bash
+# Buat sesi baru bernama "kerja"
+screen -S kerja
+
+# --- Kamu sekarang di dalam sesi screen ---
+
+# Detach: tekan  Ctrl+A  lalu  D
+
+# Masuk lagi ke sesi:
+screen -r kerja
+
+# Lihat semua sesi screen:
+screen -ls
+
+# Matikan sesi:
+screen -X -S kerja quit
+```
+
+### Kapan Harus Pakai Multiplexer?
+
+| Situasi | Pakai Multiplexer? |
+| :--- | :--- |
+| Menjalankan `npm run dev` atau `node server.js` manual untuk testing | ✅ Ya — supaya tidak mati saat SSH putus |
+| Monitoring log dengan `pm2 logs` dalam waktu lama | ✅ Ya |
+| Edit file dengan `nano` / `vim` yang butuh waktu lama | ✅ Ya — progress editing aman |
+| Menjalankan aplikasi production dengan PM2 | ❌ Tidak perlu — PM2 sudah otomatis jalan di background |
+| Upload file via `scp` atau git pull cepat | ❌ Tidak perlu — selesai dalam hitungan detik |
+
+> **💡 Tips:** Biasakan langsung buat sesi tmux begitu login SSH. Ketik `tmux new -s kerja` sebagai perintah pertamamu setiap kali masuk ke server. Dengan begitu, kalau koneksi tiba-tiba putus, cukup login ulang dan `tmux attach -t kerja` — semua pekerjaanmu masih utuh persis seperti terakhir ditinggal.
+
+---
+
 ## 📜 Tata Tertib Kosan Kipli (House Rules)
 
 > [!CAUTION]
