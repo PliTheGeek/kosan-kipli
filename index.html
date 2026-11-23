@@ -435,11 +435,16 @@
             const s = document.getElementById('in-stack').value || 'Node.js / Statis';
             const p = document.getElementById('in-port').value || '3020';
 
+            const nextKamar = `Kamar ${String(Math.floor(Number(p) / 10) - 299).padStart(2, '0')}`;
+
             const sshCmd =
                 `sudo adduser ${u} && sudo chmod 711 /home/${u} && \\
 sudo mkdir -p /home/${u}/public_html && sudo chown -R ${u}:${u} /home/${u}/public_html && \\
 sudo sed -i '/^}$/i \\    location /${u}/ { proxy_pass http://127.0.0.1:${p}/; proxy_http_version 1.1; proxy_set_header Upgrade \\$http_upgrade; proxy_set_header Connection "upgrade"; proxy_set_header Host \\$host; }' /etc/nginx/sites-available/bilik-multiuser && \\
-sudo nginx -t && sudo systemctl reload nginx`;
+sudo nginx -t && sudo systemctl reload nginx && \\
+sudo jq --arg kamar "${nextKamar}" --arg nama "${n}" --arg user "${u}" --argjson port ${p} \\
+  '. += [{"kamar":$kamar,"penghuni":$nama,"username":$user,"port":$port,"stack":"—","status":"Aktif"}]' \\
+  /var/www/html/bilik.json > /tmp/bilik_tmp.json && sudo mv /tmp/bilik_tmp.json /var/www/html/bilik.json`;
 
             if (currentMode === 'guest') {
                 document.getElementById('cmd-box').textContent =

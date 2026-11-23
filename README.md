@@ -25,7 +25,10 @@ Sebelum menjalankan perintah SSH, deploy, maupun setup CI/CD di bawah ini, **kam
 | :--- | :--- | :--- | :--- | :--- | :--- |
 | **Kantor Kos** | Admin (`pli`) | `pli` | `3000` (3001–3009) | `http://48.193.45.144/` | — |
 | **Kamar 01** | Mas Nawawow | `nawawow` | `3010` (3011–3019) | `http://48.193.45.144/~nawawow/` | `http://48.193.45.144/nawawow/` |
-| **Kamar 02** | *(Tersedia)* | `<username>` | `3020` (3021–3029) | `http://48.193.45.144/~<username>/` | `http://48.193.45.144/<username>/` |
+| **Kamar 02** | Afad-Senpai | `afad` | `3020` (3021–3029) | `http://48.193.45.144/~afad/` | `http://48.193.45.144/afad/` |
+| **Kamar 03** | Arza | `arza` | `3030` (3031–3039) | `http://48.193.45.144/~arza/` | `http://48.193.45.144/arza/` |
+| **Kamar 04** | Deon | `deon` | `3040` (3041–3049) | `http://48.193.45.144/~deon/` | `http://48.193.45.144/deon/` |
+| **Kamar 05** | *(Tersedia)* | `<username>` | `3050` (3051–3059) | `http://48.193.45.144/~<username>/` | `http://48.193.45.144/<username>/` |
 
 ---
 

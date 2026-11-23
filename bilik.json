@@ -6,5 +6,29 @@
     "port": 3010,
     "stack": "Node.js / Express + PHP",
     "status": "Aktif"
+  },
+  {
+    "kamar": "Kamar 02",
+    "penghuni": "Afad-Senpai",
+    "username": "afad",
+    "port": 3020,
+    "stack": "Node.js / Express + PHP",
+    "status": "Aktif"
+  },
+  {
+    "kamar": "Kamar 03",
+    "penghuni": "Arza",
+    "username": "kakekswags",
+    "port": 3030,
+    "stack": "Node.js / Express + PHP",
+    "status": "Aktif"
+  },
+  {
+    "kamar": "Kamar 04",
+    "penghuni": "Deon",
+    "username": "deon",
+    "port": 3040,
+    "stack": "Node.js / Express + PHP",
+    "status": "Aktif"
   }
 ]
